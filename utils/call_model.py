@@ -29,7 +29,8 @@ from warmup_scheduler import GradualWarmupScheduler
 # from utils.call_model import CallModel
 from torchvision.models import resnet18
 from efficientnet_pytorch import EfficientNet
-from src.model import PreResnet18, PreEfficientnetB0, PreEfficientnetB1, PreEfficientnetB2
+from src.model import *
+#from src.model import PreResnet18, PreEfficientnetB0, PreEfficientnetB1, PreEfficientnetB2
 # from src.model import *
 from tqdm import tqdm
 import logging

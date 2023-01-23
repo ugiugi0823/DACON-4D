@@ -29,30 +29,30 @@ from warmup_scheduler import GradualWarmupScheduler
 # from utils.call_model import CallModel
 from torchvision.models import resnet18
 from efficientnet_pytorch import EfficientNet
-
-from src.model import *
+from src.model import PreResnet18, PreEfficientnetB0, PreEfficientnetB1, PreEfficientnetB2
+# from src.model import *
 from tqdm import tqdm
 import logging
 
 class CallModel():
-    def __init__(self, model_type=None, pretrained=True, logger=None, path='/content/drive/MyDrive/pretraines_model'):
+    def __init__(self, model_type=None, pretrained=True, logger=None, path='./pretrained_model'):
         
         # MODEL TYPE
         if model_type == 'resnet18':
-            base_model = Resnet18()
+            base_model = PreResnet18()
             weight_path = os.path.join(path, 'resnet18.pth')
 
-        elif model_type == 'efficientnetb1':
-            base_model = EfficientnetB1()
-            weight_path = os.path.join(path, 'adv-efficientnet-b1.pth')
-            
         elif model_type == 'efficientnetb0':
-            base_model = EfficientnetB0()
-            weight_path = os.path.join(path, 'adv-efficientnet-b0.pth')
+            base_model = PreEfficientnetB0()
+            weight_path = os.path.join(path, 'efficientnet-b0.pth')
+            
+        elif model_type == 'efficientnetb1':
+            base_model = PreEfficientnetB1()
+            weight_path = os.path.join(path, 'efficientnet-b1.pth')
             
         elif model_type == 'efficientnetb2':
-            base_model = EfficientnetB2()
-            weight_path = os.path.join(path, 'adv-efficientnet-b2.pth')
+            base_model = PreEfficientnetB2()
+            weight_path = os.path.join(path, 'efficientnet-b2.pth')
             
         else:
             raise Exception(f"No such model type: {model_type}")
@@ -64,7 +64,7 @@ class CallModel():
             base_model = CallModel._load_weights(base_model, weight_path)
             
             # b5 model
-            nn.init.xavier_normal_(base_model.block[0]._fc.weight)
+            nn.init.xavier_normal_(base_model.block[0].fc.weight)
            
         else:
             logger.info(f"Not using pretrained model.")
@@ -76,5 +76,5 @@ class CallModel():
         
     @staticmethod
     def _load_weights(model, path):
-        model.load_state_dict(torch.load(path))
+        model.load_state_dict(torch.load(path), strict=False)
         return model

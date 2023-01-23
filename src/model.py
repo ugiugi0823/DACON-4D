@@ -43,9 +43,9 @@ from efficientnet_pytorch import EfficientNet
 """
 Here every model to be used for pretraining/training is defined.
 """
-class Resnet18(nn.Module):
+class PreResnet18(nn.Module):
     def __init__(self):
-        super(Resnet18, self).__init__()
+        super(PreResnet18, self).__init__()
         
         base_model = resnet18()
         self.block = nn.Sequential(
@@ -60,25 +60,9 @@ class Resnet18(nn.Module):
         return out
 
     
-class EfficientnetB1(nn.Module):
+class PreEfficientnetB0(nn.Module):
     def __init__(self):
-        super(EfficientnetB1, self).__init__()
-        
-        base_model = EfficientNet.from_pretrained('efficientnet-b1', num_classes=10)
-        self.block = nn.Sequential(
-            base_model
-        )
-        
-        nn.init.xavier_normal_(self.block[0]._fc.weight)
-        
-    def forward(self, x):
-        out = self.block(x)
-        return out
-
-
-class EfficientnetB0(nn.Module):
-    def __init__(self):
-        super(EfficientnetB0, self).__init__()
+        super(PreEfficientnetB0, self).__init__()
         
         base_model = EfficientNet.from_pretrained('efficientnet-b0', num_classes=10)
         self.block = nn.Sequential(
@@ -92,9 +76,25 @@ class EfficientnetB0(nn.Module):
         return out
 
 
-class EfficientnetB2(nn.Module):
+class PreEfficientnetB1(nn.Module):
     def __init__(self):
-        super(EfficientnetB2, self).__init__()
+        super(PreEfficientnetB1, self).__init__()
+        
+        base_model = EfficientNet.from_pretrained('efficientnet-b1', num_classes=10)
+        self.block = nn.Sequential(
+            base_model
+        )
+        
+        nn.init.xavier_normal_(self.block[0]._fc.weight)
+        
+    def forward(self, x):
+        out = self.block(x)
+        return out
+
+
+class PreEfficientnetB2(nn.Module):
+    def __init__(self):
+        super(PreEfficientnetB2, self).__init__()
         
         base_model = EfficientNet.from_pretrained('efficientnet-b2', num_classes=10)
         self.block = nn.Sequential(

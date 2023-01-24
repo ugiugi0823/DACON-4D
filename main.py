@@ -204,7 +204,7 @@ def make_inference(args, model, test_loader):
     if args.voting == 'soft':
         fin_total_set = np.mean(total_set, axis=0)
     else:
-        fin_total_set = np.where(np.mean(total_set, axis=0) >= 0.5, 1, 0)
+        fin_total_set = np.where(np.mean(total_set, axis=0) >= 0.35, 1, 0)
     
     return fin_total_set
  
@@ -243,11 +243,11 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=32, help='Batch size for train-loader for training phase')
     parser.add_argument("--val_ratio", type=float, default=0.2, help='Ratio for validation set: default=0.1')
     parser.add_argument("--epochs", type=int, default=100, help='Epochs for training: default=100')
-    parser.add_argument("--learning_rate", type=float, default=1e-3, help='Learning rate for training: default=0.0029')
-    parser.add_argument("--patience", type=int, default=10, help='Patience of the earlystopper: default=10')
+    parser.add_argument("--learning_rate", type=float, default=0.001, help='Learning rate for training: default=0.0029')
+    parser.add_argument("--patience", type=int, default=8, help='Patience of the earlystopper: default=10')
     parser.add_argument("--verbose", type=int, default=100, help='Between batch range to print train accuracy: default=100')
     parser.add_argument("--threshold", type=float, default=0.0, help='Threshold used for predicting 0/1')
-    parser.add_argument("--seed", type=int, default=227182, help='Seed used for reproduction')
+    parser.add_argument("--seed", type=int, default=777, help='Seed used for reproduction')
     parser.add_argument("--fold_k", type=int, default=5, help='Number of fold for k-fold split. If k=1, standard train/val splitting is done.')
     parser.add_argument("--tta", dest='tta', action='store_true', help='Whether to use TTA on inference. Specify this argument to use TTA.')
     parser.add_argument("--voting", type=str, default='soft', help='Choosing soft voting or hard voting at inference')

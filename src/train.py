@@ -28,8 +28,8 @@ def train_model(input_model, fold_k, model_save_path, args, logger, *loaders):
     #  Loss function / Opt
     # ----------------------
     loss_function = nn.MultiLabelSoftMarginLoss()
-    #optimizer = optim.RAdam(model.parameters(), lr=learning_rate, betas=(0.9, 0.999), weight_decay=1e-4)
-    optimizer = optim.SGD(model.parameters(), lr=learning_rate, weight_decay=1e-4,momentum=0.9)
+    optimizer = optim.RAdam(model.parameters(), lr=learning_rate, betas=(0.9, 0.999), weight_decay=1e-4)
+    #optimizer = optim.SGD(model.parameters(), lr=learning_rate, weight_decay=1e-4,momentum=0.9)
     
     # -----------------
     #   amp wrapping

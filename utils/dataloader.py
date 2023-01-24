@@ -55,7 +55,7 @@ class CustomDataLoader():
         idx = item_index
         label = self.label_values[idx]
         
-        image_idx = str(self.label_index[idx]).zfill(5) + '.jpg'
+        image_idx = str(self.label_index[idx][8:]).zfill(5)
         image_path = os.path.join(self.img_dir, image_idx)
         assert os.path.exists(image_path), f"Given image path not exists: {image_path}"
         

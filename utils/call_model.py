@@ -40,7 +40,7 @@ class CallModel():
     def __init__(self, model_type=None, pretrained=True, logger=None, path='./pretrained_model'):
         
         # MODEL TYPE
-        if model_type == 'resnet50':
+        if model_type == 'resnet18':
             base_model = PreResnet50()
             weight_path = os.path.join(path, 'resnet18.pth')
 

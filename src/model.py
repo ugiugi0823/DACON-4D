@@ -61,11 +61,11 @@ class PreResnet152(nn.Module):
         return out
 
     
-class PreEfficientnetB0(nn.Module):
+class PreEfficientnetB7(nn.Module):
     def __init__(self):
-        super(PreEfficientnetB0, self).__init__()
+        super(PreEfficientnetB7, self).__init__()
         
-        base_model = EfficientNet.from_pretrained('efficientnet-b0', num_classes=10)
+        base_model = EfficientNet.from_pretrained('efficientnet-b7', num_classes=10)
         self.block = nn.Sequential(
             base_model
         )

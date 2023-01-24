@@ -30,7 +30,7 @@ from warmup_scheduler import GradualWarmupScheduler
 from torchvision.models import resnet50, ResNet50_Weights, resnet18,  resnet152
 
 from efficientnet_pytorch import EfficientNet
-from src.model import *
+from src.model import  PreResnet50, PreEfficientnetB7, PreEfficientnetB1, PreEfficientnetB2
 #from src.model import PreResnet18, PreEfficientnetB0, PreEfficientnetB1, PreEfficientnetB2
 # from src.model import *
 from tqdm import tqdm
@@ -40,9 +40,9 @@ class CallModel():
     def __init__(self, model_type=None, pretrained=True, logger=None, path='/content/drive/MyDrive/pretrained_model'):
         
         # MODEL TYPE
-        if model_type == 'resnet152':
-            base_model = PreResnet152()
-            weight_path = os.path.join(path, 'resnet152-f82ba261.pth')
+        if model_type == 'resnet50':
+            base_model = PreResnet50()
+            weight_path = os.path.join(path, 'resnet50-IMAGENET1K_V2.pth')
               
         elif model_type == 'efficientnetb7':
             base_model = PreEfficientnetB7()

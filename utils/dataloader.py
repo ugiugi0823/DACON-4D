@@ -19,8 +19,8 @@ class CustomDataLoader():
                   e.g. np.array([1, 5, 10, 102, ...])
         use_cuda : Decide whether to use cuda. If cuda is not available, it will be set False.
         """
-        #img_dir = "/content/DACON-4D/dataset/trainset"
-        #label_dir = "/content/DACON-4D/dataset/train.csv"
+        img_dir = "/content/DACON-4D/dataset/train"
+        label_dir = "/content/DACON-4D/dataset/train.csv"
         assert os.path.exists(img_dir) and os.path.exists(label_dir), "Path not exists."
         
         self.img_dir = img_dir

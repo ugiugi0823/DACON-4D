@@ -44,11 +44,11 @@ from efficientnet_pytorch import EfficientNet
 """
 Here every model to be used for pretraining/training is defined.
 """
-class PreResnet152(nn.Module):
+class PreResnet50(nn.Module):
     def __init__(self):
-        super(PreResnet152, self).__init__()
+        super(PreResnet50, self).__init__()
         
-        base_model = resnet152()
+        base_model = resnet50()
         self.block = nn.Sequential(
             base_model,
             nn.Linear(1000, 10),

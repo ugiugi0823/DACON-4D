@@ -43,10 +43,10 @@ class CallModel():
         if model_type == 'resnet152':
             base_model = PreResnet152()
             weight_path = os.path.join(path, 'resnet152-f82ba261.pth')
-
-        elif model_type == 'efficientnetb0':
-            base_model = PreEfficientnetB0()
-            weight_path = os.path.join(path, 'efficientnet-b0.pth')
+              
+        elif model_type == 'efficientnetb7':
+            base_model = PreEfficientnetB7()
+            weight_path = os.path.join(path, 'efficientnet-b7.pth')
             
         elif model_type == 'efficientnetb1':
             base_model = PreEfficientnetB1()

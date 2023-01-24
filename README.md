@@ -2,7 +2,7 @@
 
 
 
-<img width="80%" src="https://user-images.githubusercontent.com/16822641/109461495-913fc480-7aa5-11eb-9d0e-aff762669f98.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/106899647/214227111-1c7c65c8-c1be-44d1-886d-813a7360f1fa.png">
 
 
 ## [배경] 

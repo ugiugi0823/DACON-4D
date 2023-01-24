@@ -27,7 +27,7 @@ from warmup_scheduler import GradualWarmupScheduler
 # from utils.dataloader import CustomDataLoader
 # from utils.radams import RAdam
 # from utils.call_model import CallModel
-from torchvision.models import resnet50, ResNet50_Weights, resnet18
+from torchvision.models import resnet50, ResNet50_Weights, resnet18,  resnet152
 
 from efficientnet_pytorch import EfficientNet
 from src.model import *
@@ -37,12 +37,12 @@ from tqdm import tqdm
 import logging
 
 class CallModel():
-    def __init__(self, model_type=None, pretrained=True, logger=None, path='./pretrained_model'):
+    def __init__(self, model_type=None, pretrained=True, logger=None, path='/content/drive/MyDrive/pretrained_model'):
         
         # MODEL TYPE
-        if model_type == 'resnet50':
-            base_model = PreResnet50()
-            weight_path = os.path.join(path, 'resnet18.pth')
+        if model_type == 'resnet152':
+            base_model = PreResnet152()
+            weight_path = os.path.join(path, 'resnet152-f82ba261.pth')
 
         elif model_type == 'efficientnetb0':
             base_model = PreEfficientnetB0()

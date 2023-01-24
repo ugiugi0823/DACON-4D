@@ -48,7 +48,7 @@ def split_index(total_index, val_ratio):
     return train_sampled, val_sampled
 
 
-def split_kfold(k, train_len=65988):    
+def split_kfold(k, train_len=32994):    
     kfold = KFold(n_splits=k, shuffle=True)
     splitted = kfold.split(range(train_len))
     return splitted
@@ -57,11 +57,13 @@ def split_kfold(k, train_len=65988):
 
 def split_dataset(args):
     if args.fold_k == 1:
-        train_index_set, val_index_set = split_index(range(65988), args.val_ratio)
+        train_index_set, val_index_set = split_index(range(32994), args.val_ratio)
         train_index_set, val_index_set = [train_index_set], [val_index_set]
         
+        
+        
     elif args.fold_k > 1:
-        splitted = split_kfold(args.fold_k, train_len=65988)
+        splitted = split_kfold(args.fold_k, train_len=32994)
         train_index_set, val_index_set = [], []
         
         for train_fold, val_fold in splitted:
@@ -234,7 +236,7 @@ if __name__ == "__main__":
     parser.add_argument("--base_dir", type=str, default="/content/DACON-4D", help='Base PATH of your work')
     parser.add_argument("--mode", type=str, default="train", help='[train | test]')
     parser.add_argument("--data_type", type=str, default="denoised", help='[original | denoised]: default=denoised')
-    parser.add_argument("--ckpt_path", type=str, default="/content/drive/MyDrive/ckpt", help='PATH to weights of ckpts.')
+    parser.add_argument("--ckpt_path", type=str, default="/content/DACON-4D/ckpt", help='PATH to weights of ckpts.')
     parser.add_argument("--base_model", type=str, default="resnet50", help="[plain_resnet50, custom_resnet50, plain_efficientnetb4]")
     parser.add_argument("--pretrained", dest='pretrained', action='store_true', help='Default is false, so specify this argument to use pretrained model')
     parser.add_argument("--pretrained_weights_dir", type=str, default="./pretrained_model", help='PATH to weights of pretrained model')

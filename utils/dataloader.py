@@ -19,16 +19,15 @@ class CustomDataLoader():
                   e.g. np.array([1, 5, 10, 102, ...])
         use_cuda : Decide whether to use cuda. If cuda is not available, it will be set False.
         """
-        img_dir = "/content/DACON-4D/dataset/trainset"
-        label_dir = "/content/DACON-4D/dataset/train.csv"
+        #img_dir = "/content/DACON-4D/dataset/trainset"
+        #label_dir = "/content/DACON-4D/dataset/train.csv"
         assert os.path.exists(img_dir) and os.path.exists(label_dir), "Path not exists."
         
         self.img_dir = img_dir
         self.label_dir = label_dir
         
-        dd_df = pd.read_csv(label_dir)
-        dd_df['id'] = dd_df['id'].apply(lambda x:x.replace('TRAIN_', ''))
-        label_df = dd_df.drop(['img_path'],axis=1)
+        label_df = pd.read_csv(label_dir)
+        label_df = label_df.drop(label_df.columns[[0]], axis=1)
 
         self.label_index = label_df.iloc[row_index, 0].values
         self.label_values = label_df.iloc[row_index, 1:].values
@@ -56,7 +55,7 @@ class CustomDataLoader():
         idx = item_index
         label = self.label_values[idx]
         
-        image_idx = 'TRAIN_' + str(self.label_index[idx]).zfill(5) + '.jpg'
+        image_idx = str(self.label_index[idx]).zfill(5) + '.jpg'
         image_path = os.path.join(self.img_dir, image_idx)
         assert os.path.exists(image_path), f"Given image path not exists: {image_path}"
         

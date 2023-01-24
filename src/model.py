@@ -37,18 +37,18 @@ import logging
 #resnet18_pretrained = models.resnet18(pretrained=True)
 
 ##3
-from torchvision.models import resnet50, ResNet50_Weights, resnet18
+from torchvision.models import resnet50, ResNet50_Weights, resnet18, resnet152
 
 from efficientnet_pytorch import EfficientNet
 
 """
 Here every model to be used for pretraining/training is defined.
 """
-class PreResnet50(nn.Module):
+class PreResnet152(nn.Module):
     def __init__(self):
-        super(PreResnet50, self).__init__()
+        super(PreResnet152, self).__init__()
         
-        base_model = resnet50()
+        base_model = resnet152()
         self.block = nn.Sequential(
             base_model,
             nn.Linear(1000, 10),

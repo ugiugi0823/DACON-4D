@@ -204,7 +204,7 @@ def make_inference(args, model, test_loader):
     if args.voting == 'soft':
         fin_total_set = np.mean(total_set, axis=0)
     else:
-        fin_total_set = np.where(np.mean(total_set, axis=0) >= 0.35, 1, 0)
+        fin_total_set = np.where(np.mean(total_set, axis=0) >= 0.5, 1, 0)
     
     return fin_total_set
  

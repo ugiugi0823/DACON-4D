@@ -53,23 +53,22 @@ def image_transformer(input_image=None, train=True):
     Using torchvision.transforms, make PIL image to tensor image
     with normalizing and flipping augmentations
     """
-    # normalize = transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     
     if train:
-        transformer = A.Compose([
-            A.Resize(224, 224),       
+        transformer = transforms.Compose([
+            transforms.Resize((224, 224)),       
             #RotateTransform([0, 0, 0, -90, 90, 180]),
-            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0, always_apply=False, p=1.0),
+            # A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0, always_apply=False, p=1.0),
             #transforms.RandomHorizontalFlip(p=0.2),
-            ToTensorV2(),
-            
+            transforms.ToTensor(),
+            normalize,                        
         ])
     else:
         transformer = transforms.Compose([
-            A.Resize(224, 224), 
-            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0, always_apply=False, p=1.0),
-            ToTensorV2()
-            
+            transforms.Resize((224, 224)), 
+            transforms.ToTensor(),
+            normalize,
         ])
 
     transformed_image = transformer(input_image)

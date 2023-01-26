@@ -53,7 +53,8 @@ def image_transformer(input_image=None, train=True):
     normalize = transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
     
     if train:
-        transformer = transforms.Compose([        
+        transformer = transforms.Compose([ 
+            transforms.Resize((224, 224)),       
             RotateTransform([0, 0, 0, -90, 90, 180]),
             transforms.RandomPerspective(distortion_scale=0.15, p=0.2),
             #transforms.RandomHorizontalFlip(p=0.2),
@@ -78,7 +79,8 @@ def tta_transformer(input_image, angle):
     """
     normalize = transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 
-    transformer = transforms.Compose([        
+    transformer = transforms.Compose([       
+        transforms.Resize((224, 224)), 
         RotateTransform(angle),
         transforms.ToTensor(),
         normalize,

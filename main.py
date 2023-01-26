@@ -243,7 +243,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=32, help='Batch size for train-loader for training phase')
     parser.add_argument("--val_ratio", type=float, default=0.2, help='Ratio for validation set: default=0.1')
     parser.add_argument("--epochs", type=int, default=100, help='Epochs for training: default=100')
-    parser.add_argument("--learning_rate", type=float, default=0.001, help='Learning rate for training: default=0.0029')
+    parser.add_argument("--learning_rate", type=float, default=0.0001, help='Learning rate for training: default=0.0029')
     parser.add_argument("--patience", type=int, default=8, help='Patience of the earlystopper: default=10')
     parser.add_argument("--verbose", type=int, default=100, help='Between batch range to print train accuracy: default=100')
     parser.add_argument("--threshold", type=float, default=0.0, help='Threshold used for predicting 0/1')

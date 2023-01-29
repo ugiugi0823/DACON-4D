@@ -3,13 +3,33 @@ import cv2
 from tqdm import tqdm
 import pandas as pd
 import argparse
+from albumentations.pytorch.transforms import ToTensorV2
 import ttach as tta
 from glob import glob
 from datetime import datetime
 import copy
 import torch
+from torchvision.models import resnet50
 from efficientnet_pytorch import EfficientNet
-import albumentations.pytorch
+import albumentations as A
+
+from torch import nn
+
+class PreResnet50(nn.Module):
+    def __init__(self):
+        super(PreResnet50, self).__init__()
+        
+        base_model = resnet50()
+        self.block = nn.Sequential(
+            base_model,
+            nn.Linear(1000, 10),
+        )
+        
+        #nn.init.xavier_normal_(self.block[1].weight)
+        
+    def forward(self, x):
+        out = self.block(x)
+        return out
 
 
 class DatasetMNIST(torch.utils.data.Dataset):
@@ -23,28 +43,30 @@ class DatasetMNIST(torch.utils.data.Dataset):
     
     def __getitem__(self, index):        
         image_fn = self.image_folder +\
-            str(self.label_df.iloc[index,0]).zfill(5) + '.png'
+            str(self.label_df.iloc[index,0]).zfill(5) + '.jpg'
                                               
-        image = cv2.imread(image_fn, cv2.IMREAD_GRAYSCALE)        
-        image = image.reshape([256, 256, 1])
+        image = cv2.imread(image_fn)        
+        # image = image.reshape([256, 256, 3])
 
         label = self.label_df.iloc[index,1:].values.astype('float')
 
-        if self.transforms:            
-            image = self.transforms(image=image)['image'] / 255.0
+        if self.transforms is not None:            
+            image = self.transforms(image=image)['image']
 
         return image, label
 
 base_transforms = {
-    'test' : albumentations.Compose([        
-        albumentations.pytorch.ToTensorV2(),
+    'test' : A.Compose([   
+            A.Resize(224,224),
+            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0, always_apply=False, p=1.0),
+            ToTensorV2(),
         ]),
 }
 
 tta_transforms = tta.Compose(
-    [
-        tta.Rotate90(angles=[0, 90, 180, 270]),
-    ]
+     [
+         tta.Rotate90(angles=[0, 90, 180, 270]),
+     ]
 )
 
 
@@ -52,13 +74,14 @@ def main():
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--image_path', type=str, default="./data/")
-    parser.add_argument('--label_path', type=str, default="./input/sample_submission.csv")
-    parser.add_argument('--weight_path', type=str, default='./input/model')
-    parser.add_argument('--out_path', type=str, default='./output/')
+    parser.add_argument('--image_path', type=str, default="./dataset/test/")
+    parser.add_argument('--sub_path', type=str, default="./dataset/sample_submission_2.csv")
+    parser.add_argument('--label_path', type=str, default="./dataset/sample_submission.csv")
+    parser.add_argument('--weight_path', type=str, default='/content/drive/MyDrive/ckpt/model_5/')
+    parser.add_argument('--out_path', type=str, default='./')
 
-    parser.add_argument('--model', type=str, default='efficientnet-b8')    
-    parser.add_argument('--batch_size', type=int, default=4)
+    parser.add_argument('--model', type=str, default='resnet50')    
+    parser.add_argument('--batch_size', type=int, default=32)
 
     parser.add_argument('--device', type=str, default=device)
 
@@ -74,9 +97,10 @@ def main():
     for key, value in vars(args).items():
         print(key, ":", value)
     
-    weights = glob(os.path.join(args.weight_path, '*.tar'))
+    weights = glob(os.path.join(args.weight_path, '*.pth'))
 
     test_df = pd.read_csv(args.label_path)
+
 
     test_set = DatasetMNIST(
         image_folder=args.image_path,
@@ -84,10 +108,12 @@ def main():
         transforms=base_transforms['test']
     )
 
-    submission_df = copy.copy(test_df)
+    submission_df = pd.read_csv(args.sub_path)
+
+
 
     for weight in weights:   
-        model = EfficientNet.from_name(args.model, in_channels=1, num_classes=26)
+        model = PreResnet50()
         model.load_state_dict(torch.load(weight, map_location=args.device))
         print('=' * 50)
         print('[info msg] weight {} is loaded'.format(weight))
@@ -109,9 +135,10 @@ def main():
         print('[info msg] inference start')
 
         for i, (images, _) in enumerate(tqdm(test_data_loader)):
-            images = images.to(args.device)            
+            images = images.to(args.device)
+            # outputs = model(images).detach().cpu().numpy().squeeze() # not tta            
             outputs = tta_model(images).detach().cpu().numpy().squeeze() # soft
-            # outputs = (outputs > 0.5).astype(int) # hard vote
+            #outputs = (outputs > 0.5).astype(int) # hard vote
             batch_index = i * batch_size
             submission_df.iloc[batch_index:batch_index+batch_size, 1:] += outputs
     

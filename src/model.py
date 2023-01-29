@@ -54,7 +54,7 @@ class PreResnet50(nn.Module):
             nn.Linear(1000, 10),
         )
         
-        nn.init.xavier_normal_(self.block[1].weight)
+        #nn.init.xavier_normal_(self.block[1].weight)
         
     def forward(self, x):
         out = self.block(x)

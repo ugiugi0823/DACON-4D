@@ -75,10 +75,10 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--image_path', type=str, default="./dataset/test/")
-    parser.add_argument('--sub_path', type=str, default="./dataset/sample_submission_2.csv")
-    parser.add_argument('--label_path', type=str, default="./dataset/sample_submission.csv")
-    parser.add_argument('--weight_path', type=str, default='/content/drive/MyDrive/ckpt/model_5/')
-    parser.add_argument('--out_path', type=str, default='./')
+    parser.add_argument('--sub_path', type=str, default="./dataset/sample_submission.csv")
+    parser.add_argument('--label_path', type=str, default="./dataset/test_.csv")
+    parser.add_argument('--weight_path', type=str, default='/content/DACON-4D/ckpt/model_1')
+    parser.add_argument('--out_path', type=str, default='/content/')
 
     parser.add_argument('--model', type=str, default='resnet50')    
     parser.add_argument('--batch_size', type=int, default=32)

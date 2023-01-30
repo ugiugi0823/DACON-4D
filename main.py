@@ -160,7 +160,7 @@ def load_dataset(mode='train', **kwargs):
         return test_loader
 
 
-def load_trained_weight(model_input=None, model_index=0, model_type='early', fold_k=1, trained_weight_path='/content/drive/MyDrive/ckpt'):
+def load_trained_weight(model_input=None, model_index=0, model_type='early', fold_k=1, trained_weight_path='/content/ckpt'):
     '''
     Load trained weights to your model.
     '''
@@ -237,7 +237,7 @@ if __name__ == "__main__":
     parser.add_argument("--ckpt_path", type=str, default="/content/drive/MyDrive/ckpt", help='PATH to weights of ckpts.')
     parser.add_argument("--base_model", type=str, default="resnet152", help="[plain_resnet50, custom_resnet50, plain_efficientnetb4]")
     parser.add_argument("--pretrained", dest='pretrained', action='store_true', help='Default is false, so specify this argument to use pretrained model')
-    parser.add_argument("--pretrained_weights_dir", type=str, default="/content/drive/MyDrive/pretrained_model", help='PATH to weights of pretrained model')
+    parser.add_argument("--pretrained_weights_dir", type=str, default="/content/pretrained_model", help='PATH to weights of pretrained model')
     parser.add_argument("--cuda", dest='cuda', action='store_false', help='Whether to use CUDA: defuault is True, so specify this argument not to use CUDA')
     parser.add_argument("--device_index", type=int, default=0, help='Cuda device to use. Used for multiple gpu environment')
     parser.add_argument("--batch_size", type=int, default=32, help='Batch size for train-loader for training phase')
@@ -296,7 +296,7 @@ if __name__ == "__main__":
     base_dir = args.base_dir
     
     if args.data_type == 'original':
-        data_to_use = ['train', 'test']
+        data_to_use = ['train_new', 'test']
     elif args.data_type == 'denoised':
         data_to_use = ['denoised_trainset_weak', 'denoised_testset_weak']
     else:

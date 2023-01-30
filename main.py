@@ -160,7 +160,7 @@ def load_dataset(mode='train', **kwargs):
         return test_loader
 
 
-def load_trained_weight(model_input=None, model_index=0, model_type='early', fold_k=1, trained_weight_path='/content/ckpt'):
+def load_trained_weight(model_input=None, model_index=0, model_type='early', fold_k=1, trained_weight_path='/content/DACON-4D/ckpt'):
     '''
     Load trained weights to your model.
     '''
@@ -234,7 +234,7 @@ if __name__ == "__main__":
     parser.add_argument("--base_dir", type=str, default="/content/DACON-4D", help='Base PATH of your work')
     parser.add_argument("--mode", type=str, default="train", help='[train | test]')
     parser.add_argument("--data_type", type=str, default="denoised", help='[original | denoised]: default=denoised')
-    parser.add_argument("--ckpt_path", type=str, default="/content/ckpt", help='PATH to weights of ckpts.')
+    parser.add_argument("--ckpt_path", type=str, default="/content/DACON-4D/ckpt", help='PATH to weights of ckpts.')
     parser.add_argument("--base_model", type=str, default="resnet152", help="[plain_resnet50, custom_resnet50, plain_efficientnetb4]")
     parser.add_argument("--pretrained", dest='pretrained', action='store_true', help='Default is false, so specify this argument to use pretrained model')
     parser.add_argument("--pretrained_weights_dir", type=str, default="/content/pretrained_model", help='PATH to weights of pretrained model')

@@ -27,7 +27,7 @@ class CustomDataLoader():
         self.label_dir = label_dir
         
         label_df = pd.read_csv(label_dir)
-        label_df = label_df.drop(label_df.columns[[0]], axis=1)
+        #label_df = label_df.drop(label_df.columns[[0]], axis=1)
 
         self.label_index = label_df.iloc[row_index, 0].values
         self.label_values = label_df.iloc[row_index, 1:].values

@@ -1,7 +1,6 @@
 # call_model.py
 import os
-import csv
-import cv2
+
 import argparse
 import numpy as np
 import pandas as pd

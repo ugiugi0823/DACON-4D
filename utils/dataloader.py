@@ -1,9 +1,11 @@
 # dataloader.py
+
 import os
+import torch
 import pandas as pd
 from PIL import Image
-import torch
-from utils.imageprocess import image_transformer, tta_transformer
+
+from utils.imageprocess import image_transformer
 
 
 class CustomDataLoader():
@@ -38,10 +40,7 @@ class CustomDataLoader():
         # Set device
         self.device = device
         
-        # TTA(at inference)
-        self.tta = tta
-        self.angle = angle
-        
+
 
     def __len__(self):
         return self.label_index.__len__()
@@ -60,14 +59,9 @@ class CustomDataLoader():
         assert os.path.exists(image_path), f"Given image path not exists: {image_path}"
         
         pil_image = Image.open(image_path).convert('RGB')
-        
-        if not self.tta:
-            fin_image = image_transformer(pil_image, self.train)
-        else:
-            fin_image = tta_transformer(pil_image, self.angle)
+        fin_image = image_transformer(pil_image, self.train)
 
-        # To torch.tensor type
-        image_item = fin_image.float().to(self.device)
+        image_item = fin_image.float().to(self.device)        
         label_item = torch.tensor(label).float().to(self.device)
         
         return image_item, label_item

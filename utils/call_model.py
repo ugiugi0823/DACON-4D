@@ -1,6 +1,7 @@
 # call_model.py
 import os
 import torch
+import logging
 from torch import nn
 
 
@@ -15,8 +16,7 @@ from torchvision.models import resnet50, ResNet50_Weights, resnet18,  resnet152
 
 from efficientnet_pytorch import EfficientNet
 from src.model import *
-from tqdm import tqdm
-import logging
+
 
 class CallModel():
     def __init__(self, model_type=None, pretrained=True, logger=None, path='/content/drive/MyDrive/pretrained_model'):

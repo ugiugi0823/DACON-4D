@@ -21,18 +21,11 @@ from torchvision import transforms
 
 from warmup_scheduler import GradualWarmupScheduler
 
-# from src.train import train_model
-# from utils.imageprocess import image_transformer, image_processor
-# from utils.EarlyStopping import EarlyStopping
-# from utils.dataloader import CustomDataLoader
-# from utils.radams import RAdam
-# from utils.call_model import CallModel
+
 from torchvision.models import resnet50, ResNet50_Weights, resnet18,  resnet152
 
 from efficientnet_pytorch import EfficientNet
-from src.model import  PreResnet50, PreEfficientnetB7, PreEfficientnetB1, PreEfficientnetB2
-#from src.model import PreResnet18, PreEfficientnetB0, PreEfficientnetB1, PreEfficientnetB2
-# from src.model import *
+from src.model import *
 from tqdm import tqdm
 import logging
 
@@ -66,7 +59,7 @@ class CallModel():
             base_model = CallModel._load_weights(base_model, weight_path)
             
             # b5 model
-            #nn.init.xavier_normal_(base_model.block[0].fc.weight)
+            nn.init.xavier_normal_(base_model.block[0].fc.weight)
            
         else:
             logger.info(f"Not using pretrained model.")

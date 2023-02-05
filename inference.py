@@ -17,6 +17,9 @@ from glob import glob
 from datetime import datetime
 from torchvision.models import resnet50
 from efficientnet_pytorch import EfficientNet
+from utils.call_model import CallModel
+
+import logging
 
 
 
@@ -28,22 +31,21 @@ from efficientnet_pytorch import EfficientNet
 
 
 
-
-class PreResnet50(nn.Module):
-    def __init__(self):
-        super(PreResnet50, self).__init__()
+# class PreResnet50(nn.Module):
+#     def __init__(self):
+#         super(PreResnet50, self).__init__()
         
-        base_model = resnet50()
-        self.block = nn.Sequential(
-            base_model,
-            nn.Linear(1000, 10),
-        )
+#         base_model = resnet50()
+#         self.block = nn.Sequential(
+#             base_model,
+#             nn.Linear(1000, 10),
+#         )
         
-        #nn.init.xavier_normal_(self.block[1].weight)
+#         #nn.init.xavier_normal_(self.block[1].weight)
         
-    def forward(self, x):
-        out = self.block(x)
-        return out
+#     def forward(self, x):
+#         out = self.block(x)
+#         return out
 
 
 class DatasetM(torch.utils.data.Dataset):
@@ -93,8 +95,14 @@ def main():
     parser.add_argument('--label_path', type=str, default="./dataset/test_.csv")
     parser.add_argument('--weight_path', type=str, default='/content/DACON-4D/ckpt/model_1')
     parser.add_argument('--out_path', type=str, default='/content/')
-
-    parser.add_argument('--model', type=str, default='resnet50')    
+    
+    parser.add_argument("--model_index", type=int, default=0, help='My model index. Integer type, and should be greater than 0')
+    parser.add_argument("--base_dir", type=str, default="/content/DACON-4D", help='Base PATH of your work')
+    parser.add_argument("--base_model", type=str, default="resnet50", help="[plain_resnet50, custom_resnet50, plain_efficientnetb4]")
+    parser.add_argument("--pretrained", dest='pretrained', action='store_true', help='Default is false, so specify this argument to use pretrained model')
+    parser.add_argument("--pretrained_weights_dir", type=str, default="/content/pretrained_model", help='PATH to weights of pretrained model')
+    # parser.add_argument('--model', type=str, default='resnet50')    
+    
     parser.add_argument('--batch_size', type=int, default=32)
 
     parser.add_argument('--device', type=str, default=device)
@@ -124,10 +132,37 @@ def main():
 
     submission_df = pd.read_csv(args.sub_path)
 
+    # ------------------
+    #   logger setting
+    # ------------------
+    LOG_PATH = os.path.join(args.base_dir, 'logs')
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(format="%(asctime)s : %(message)s", 
+                        level=logging.INFO,
+                        handlers=[
+                            logging.FileHandler(os.path.join(LOG_PATH, f"log_model_{args.model_index}.txt")),
+                            logging.StreamHandler()
+                        ])
+    logger.info("START")
+
+    # ----------------
+    #    Call model
+    # ----------------
+    
+    base_model_type = args.base_model
+    base_model = CallModel(model_type=base_model_type,
+                           pretrained=args.pretrained,
+                           logger=logger,
+                           path=args.pretrained_weights_dir).model_return()
+    
+    # model = base_model.to(global_device)
+
+    
+
 
 
     for weight in weights:   
-        model = PreResnet50()
+        model = base_model
         model.load_state_dict(torch.load(weight, map_location=args.device))
         print('=' * 50)
         print('[info msg] weight {} is loaded'.format(weight))
@@ -155,7 +190,7 @@ def main():
             #outputs = (outputs > 0.5).astype(int) # hard vote
             batch_index = i * batch_size
             submission_df.iloc[batch_index:batch_index+batch_size, 1:] += outputs
-    
+    # 그냥 aggregate_submit agg = 뒤로 옮기고, 
     submission_df.iloc[:,1:] = (submission_df.iloc[:,1:] / len(weights) > 0.35).astype(int)
     
     SAVE_FN = os.path.join(args.out_path, datetime.now().strftime("%m%d%H%M") + '_ensemble_submission.csv')

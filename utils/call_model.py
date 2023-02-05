@@ -66,7 +66,7 @@ class CallModel():
             base_model = CallModel._load_weights(base_model, weight_path)
             
             # b5 model
-            nn.init.xavier_normal_(base_model.block[0].fc.weight)
+            #nn.init.xavier_normal_(base_model.block[0].fc.weight)
            
         else:
             logger.info(f"Not using pretrained model.")

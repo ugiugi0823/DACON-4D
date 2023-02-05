@@ -1,19 +1,33 @@
+# inference.py
+
 import os
 import cv2
-from tqdm import tqdm
-import pandas as pd
-import argparse
-from albumentations.pytorch.transforms import ToTensorV2
-import ttach as tta
-from glob import glob
-from datetime import datetime
 import copy
 import torch
-from torchvision.models import resnet50
-from efficientnet_pytorch import EfficientNet
+
+import pandas as pd
+import argparse
+import ttach as tta
 import albumentations as A
 
+from tqdm import tqdm
+from albumentations.pytorch.transforms import ToTensorV2
 from torch import nn
+from glob import glob
+from datetime import datetime
+from torchvision.models import resnet50
+from efficientnet_pytorch import EfficientNet
+
+
+
+
+
+
+
+
+
+
+
 
 class PreResnet50(nn.Module):
     def __init__(self):
@@ -32,7 +46,7 @@ class PreResnet50(nn.Module):
         return out
 
 
-class DatasetMNIST(torch.utils.data.Dataset):
+class DatasetM(torch.utils.data.Dataset):
     def __init__(self, image_folder, label_df, transforms):        
         self.image_folder = image_folder   
         self.label_df = label_df
@@ -102,7 +116,7 @@ def main():
     test_df = pd.read_csv(args.label_path)
 
 
-    test_set = DatasetMNIST(
+    test_set = DatasetM(
         image_folder=args.image_path,
         label_df=test_df,
         transforms=base_transforms['test']

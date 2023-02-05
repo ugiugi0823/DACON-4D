@@ -96,7 +96,9 @@ def main():
     parser.add_argument('--weight_path', type=str, default='/content/DACON-4D/ckpt/model_1')
     parser.add_argument('--out_path', type=str, default='/content/')
     
-    parser.add_argument("--base_model", type=str, default="resnet152", help="[plain_resnet50, custom_resnet50, plain_efficientnetb4]")
+    parser.add_argument("--model_index", type=int, default=0, help='My model index. Integer type, and should be greater than 0')
+    parser.add_argument("--base_dir", type=str, default="/content/DACON-4D", help='Base PATH of your work')
+    parser.add_argument("--base_model", type=str, default="resnet50", help="[plain_resnet50, custom_resnet50, plain_efficientnetb4]")
     parser.add_argument("--pretrained", dest='pretrained', action='store_true', help='Default is false, so specify this argument to use pretrained model')
     parser.add_argument("--pretrained_weights_dir", type=str, default="/content/pretrained_model", help='PATH to weights of pretrained model')
     # parser.add_argument('--model', type=str, default='resnet50')    
@@ -130,6 +132,19 @@ def main():
 
     submission_df = pd.read_csv(args.sub_path)
 
+    # ------------------
+    #   logger setting
+    # ------------------
+    LOG_PATH = os.path.join(args.base_dir, 'logs')
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(format="%(asctime)s : %(message)s", 
+                        level=logging.INFO,
+                        handlers=[
+                            logging.FileHandler(os.path.join(LOG_PATH, f"log_model_{args.model_index}.txt")),
+                            logging.StreamHandler()
+                        ])
+    logger.info("START")
+
     # ----------------
     #    Call model
     # ----------------
@@ -137,7 +152,7 @@ def main():
     base_model_type = args.base_model
     base_model = CallModel(model_type=base_model_type,
                            pretrained=args.pretrained,
-                           logger=None,
+                           logger=logger,
                            path=args.pretrained_weights_dir).model_return()
     
     # model = base_model.to(global_device)

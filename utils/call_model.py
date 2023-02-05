@@ -4,8 +4,8 @@ import torch
 import logging
 from torch import nn
 
-from torchvision.models import resnet50, ResNet50_Weights, resnet18,  resnet152
-from efficientnet_pytorch import EfficientNet
+# from torchvision.models import resnet50, ResNet50_Weights, resnet18,  resnet152
+# from efficientnet_pytorch import EfficientNet
 
 from src.model import *
 

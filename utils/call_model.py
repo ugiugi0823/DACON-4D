@@ -1,11 +1,10 @@
 # call_model.py
 import os
-
-
-
 import torch
-import torch.optim as optim
 from torch import nn
+
+
+
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 

@@ -2,12 +2,15 @@
 import os
 import torch
 import logging
+
 from torch import nn
+from src.model import *
+
 
 # from torchvision.models import resnet50, ResNet50_Weights, resnet18,  resnet152
 # from efficientnet_pytorch import EfficientNet
 
-from src.model import *
+
 
 
 class CallModel():

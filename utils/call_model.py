@@ -4,17 +4,9 @@ import torch
 import logging
 from torch import nn
 
-
-
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
-
-from warmup_scheduler import GradualWarmupScheduler
-
-
 from torchvision.models import resnet50, ResNet50_Weights, resnet18,  resnet152
-
 from efficientnet_pytorch import EfficientNet
+
 from src.model import *
 
 

@@ -40,7 +40,7 @@ def split_index(total_index, val_ratio):
     return train_sampled, val_sampled
 
 
-def split_kfold(k, train_len=32994):    
+def split_kfold(k, train_len=65988):    
     kfold = KFold(n_splits=k, shuffle=True)
     splitted = kfold.split(range(train_len))
     return splitted
@@ -49,11 +49,11 @@ def split_kfold(k, train_len=32994):
 
 def split_dataset(args):
     if args.fold_k == 1:
-        train_index_set, val_index_set = split_index(range(32994), args.val_ratio)
+        train_index_set, val_index_set = split_index(range(65988), args.val_ratio)
         train_index_set, val_index_set = [train_index_set], [val_index_set]
         
     elif args.fold_k > 1:
-        splitted = split_kfold(args.fold_k, train_len=32994)
+        splitted = split_kfold(args.fold_k, train_len=65988)
         train_index_set, val_index_set = [], []
         
         for train_fold, val_fold in splitted:
